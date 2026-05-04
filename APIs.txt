@@ -1,0 +1,23 @@
+User Registration:
+http://localhost:3000/api/register
+POST
+{
+  "full_name": "alam",
+  "email": "mdzawaralam@gmail.com",
+  "password": "123fgh#"
+}
+
+User Login:
+http://localhost:3000/api/login
+POST{
+  "email": "shadab@yahoo.com",
+  "password": "shadab123#"
+}
+
+
+GET Products API, private API:
+http://localhost:3000/api/products
+
+
+POST API for products, private API:
+http://localhost:3000/api/products
