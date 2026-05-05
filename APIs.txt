@@ -21,3 +21,9 @@ http://localhost:3000/api/products
 
 POST API for products, private API:
 http://localhost:3000/api/products
+
+{
+"product_name":"a",
+"price": "44",
+"description": "hello"
+}
