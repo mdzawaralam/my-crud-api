@@ -1,32 +1,38 @@
-name: Deploy Frontend
+name: Deploy Backend
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Login Docker
+      - name: Docker Login
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/react-app .
+      - name: Build Docker Image
+        run: docker build -t mdzawaralam/my-crud-api:latest .
 
-      - name: Push image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/react-app
+      - name: Push Docker Image
+        run: docker push mdzawaralam/my-crud-api:latest
 
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
-          key: ${{ secrets.EC2_KEY }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/app
-            docker-compose pull
-            docker-compose up -d
+            cd ~/project
+
+            docker compose pull
+
+            docker compose up -d --force-recreate
+
+            docker image prune -af
